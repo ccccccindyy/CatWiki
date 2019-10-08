@@ -1,4 +1,4 @@
-package practice.com.example.xin.app
+package practice.com.example.xin.app.ui.cat_list
 
 import android.content.Context
 import android.os.Bundle
@@ -9,22 +9,18 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import practice.com.example.xin.app.data.Cat
-
-import practice.com.example.xin.app.dummy.Content
+import practice.com.example.xin.app.BreedRecyclerViewAdapter
+import practice.com.example.xin.app.data.breed.BreedDAO
 import pratice.com.example.xinzhang.recyclerview.R
 
 /**
  * A fragment representing a list of Items.
  * Activities containing this fragment MUST implement the
- * [CatListFragment.OnListFragmentInteractionListener] interface.
  */
-class CatListFragment : Fragment() {
-
-    // TODO: Customize parameters
+class BreedListFragment : Fragment() {
+  
     private var columnCount = 1
 
-    private var listener: OnListFragmentInteractionListener? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -46,43 +42,24 @@ class CatListFragment : Fragment() {
                     columnCount <= 1 -> LinearLayoutManager(context)
                     else -> GridLayoutManager(context, columnCount)
                 }
-                adapter = MyCatRecyclerViewAdapter(
-                    Content.ITEMS,
-                    listener
+                adapter = BreedRecyclerViewAdapter(
+                    BreedDAO(this.context).getBreeds()
                 )
             }
         }
         return view
     }
-
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-        if (context is OnListFragmentInteractionListener) {
-            listener = context
-        } else {
-            throw RuntimeException("$context must implement OnListFragmentInteractionListener")
-        }
-    }
-
-    override fun onDetach() {
-        super.onDetach()
-        listener = null
-    }
-
-    interface OnListFragmentInteractionListener {
-        fun onListFragmentInteraction(item: Cat?)
-    }
-
     companion object {
 
         const val ARG_COLUMN_COUNT = "column-count"
 
         @JvmStatic
         fun newInstance(columnCount: Int) =
-            CatListFragment().apply {
+            BreedListFragment().apply {
                 arguments = Bundle().apply {
                     putInt(ARG_COLUMN_COUNT, columnCount)
                 }
             }
     }
+
 }

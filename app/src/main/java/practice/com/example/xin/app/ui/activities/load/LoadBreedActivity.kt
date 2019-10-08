@@ -1,17 +1,17 @@
 package practice.com.example.xin.app.ui.activities.load
 
+import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
-import androidx.navigation.Navigation.findNavController
 import com.facebook.common.util.UriUtil
 import com.facebook.drawee.backends.pipeline.Fresco
 import com.facebook.drawee.interfaces.DraweeController
-import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.activity_load_breed.*
 import pratice.com.example.xinzhang.recyclerview.R
 import io.reactivex.schedulers.Schedulers
 import practice.com.example.xin.app.data.breed.BreedDAO
+import practice.com.example.xin.app.ui.activities.display.CatDisplayActivity
 
 
 class LoadBreedActivity : AppCompatActivity() {
@@ -22,34 +22,26 @@ class LoadBreedActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        setContentView(R.layout.activity_load_breed)
         initUI()
-
-    }
-
-    override fun onResume() {
-        super.onResume()
         viewModel.compositeDisposable.add(viewModel.loadCatBreeds()
-            .subscribeOn(Schedulers.io())
             .flatMapIterable { breed -> breed }
             .map{breedDAO.addBreed(breed = it)}
             .toList()
             .toObservable()
+            .subscribeOn(Schedulers.io())
+            .doOnError{throw it}
             .subscribe {
-                    //save all catss
-                Log.d("BREEDS",breedDAO.getBreeds().toString() )
+               startActivity( Intent(this, CatDisplayActivity::class.java))
+                this.finish()
             })
-    }
+}
 
-    override fun onPause() {
-        super.onPause()
+
+    override fun onDestroy() {
         viewModel.compositeDisposable.clear()
+        super.onDestroy()
     }
-
-
-
-    override fun onSupportNavigateUp() =
-        findNavController(this, R.id.navHostFragment).navigateUp()
 
     private fun initUI() {
         val uri = Uri.Builder()

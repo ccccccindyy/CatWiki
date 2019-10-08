@@ -12,7 +12,7 @@
             android:supportsRtl="true"
             android:theme="@style/AppTheme">
         <activity
-                android:name="practice.com.example.xin.app.ui.activities.display.MainActivity"
+                android:name="practice.com.example.xin.app.ui.activities.display.CatDisplayActivity"
                 android:label="@string/title_activity_main"
                 android:theme="@style/AppTheme.NoActionBar"></activity>
         <activity android:name="practice.com.example.xin.app.ui.activities.load.LoadBreedActivity">
