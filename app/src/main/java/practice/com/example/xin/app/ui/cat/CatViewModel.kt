@@ -1,4 +1,4 @@
-package practice.com.example.xin.app
+package practice.com.example.xin.app.ui.cat
 
 import androidx.lifecycle.ViewModel
 

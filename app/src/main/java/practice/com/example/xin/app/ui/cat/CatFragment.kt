@@ -1,4 +1,4 @@
-package practice.com.example.xin.app
+package practice.com.example.xin.app.ui.cat
 
 import android.os.Bundle
 import android.view.LayoutInflater

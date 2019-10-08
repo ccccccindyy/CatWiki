@@ -1,11 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
-        android:id="@+id/nav_graph">
+        android:id="@+id/nav_graph2"
+        app:startDestination="@id/cat_list_fragment">
 
-    <fragment android:id="@+id/catFragment"
-            android:name="practice.com.example.xin.app.ui.cat_list.CatListFragment"
+    <fragment android:id="@+id/cat_list_fragment"
+            android:name="practice.com.example.xin.app.ui.cat_list.BreedListFragment"
             android:label="CatFragment"
-            tools:layout="@layout/fragment_cat_list"
-        />
+            tools:layout="@layout/fragment_cat_list">
+
+        <action
+                android:id="@+id/action_FirstFragment_to_SecondFragment"
+                app:destination="@id/catFragment" />
+    </fragment>
+    <fragment
+            android:id="@+id/catFragment"
+            android:name="practice.com.example.xin.app.ui.cat.CatFragment"
+            android:label="@string/second_fragment_label"
+            tools:layout="@layout/cat_fragment">
+
+        <action
+                android:id="@+id/action_SecondFragment_to_FirstFragment"
+                app:destination="@id/cat_list_fragment" />
+
+        <argument
+                android:name="myArg"
+                app:argType="string" />
+    </fragment>
 </navigation>
