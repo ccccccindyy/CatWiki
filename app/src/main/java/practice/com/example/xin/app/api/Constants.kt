@@ -6,7 +6,7 @@ interface Constants {
 
         const val BREEDS = "breeds"
 
-        const val IMAGE = "image/search/"
+        const val IMAGE = "images/search/"
 
         const val BREED_ID = "breed_id"
     }

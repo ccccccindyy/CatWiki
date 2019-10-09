@@ -5,8 +5,9 @@ import practice.com.example.xin.app.api.Constants.Companion.BASE_URL
 import practice.com.example.xin.app.api.Constants.Companion.BREEDS
 import practice.com.example.xin.app.api.Constants.Companion.BREED_ID
 import practice.com.example.xin.app.api.Constants.Companion.IMAGE
+import practice.com.example.xin.app.data.Image
 import practice.com.example.xin.app.data.breed.Breed
-import retrofit2.http.Field
+import retrofit2.http.Query
 import java.util.concurrent.TimeUnit
 
 interface APIService {
@@ -15,7 +16,7 @@ interface APIService {
     fun breeds(): io.reactivex.Observable<List<Breed>>
 
     @retrofit2.http.GET(IMAGE)
-    fun getBreedDetail(@Field(BREED_ID) breedId: String): io.reactivex.Observable<List<Breed>>
+    fun getImage(@Query(BREED_ID) breedId: String): io.reactivex.Observable<List<Image>>
 
     companion object Factory {
 

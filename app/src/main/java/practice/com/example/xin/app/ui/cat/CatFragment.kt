@@ -1,21 +1,29 @@
 package practice.com.example.xin.app.ui.cat
 
 import android.content.Context
+import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
+import com.facebook.common.util.UriUtil
+import com.facebook.drawee.backends.pipeline.Fresco
+import com.facebook.drawee.interfaces.DraweeController
+import com.facebook.imagepipeline.request.ImageRequest
+import com.google.android.material.snackbar.Snackbar
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.schedulers.Schedulers
+import kotlinx.android.synthetic.main.activity_load_breed.*
 import kotlinx.android.synthetic.main.cat_fragment.*
 import practice.com.example.xin.app.Application
 import practice.com.example.xin.app.data.breed.Breed
-import javax.inject.Inject
-import android.view.MenuItem
-import androidx.navigation.findNavController
-import kotlinx.android.synthetic.main.activity_main2.*
 import practice.com.example.xin.app.ui.activities.display.CatDisplayActivity
 import pratice.com.example.xinzhang.recyclerview.R
+import javax.inject.Inject
 
 
 class CatFragment : Fragment() {
@@ -25,7 +33,8 @@ class CatFragment : Fragment() {
         const val BREED_ID_ARG = "BREED_ID_ARG"
     }
 
-    @Inject lateinit var viewModel: CatViewModel
+    @Inject
+    lateinit var viewModel: CatViewModel
 
     override fun onAttach(context: Context) {
         val app = activity?.applicationContext as Application
@@ -34,10 +43,9 @@ class CatFragment : Fragment() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-//        when (item.itemId) {
-//            android.R.id.home ->  view?.findNavController()?.popBackStack(R.id.cat_list_fragment, true)
-//
-//        }
+        when (item.itemId) {
+            android.R.id.home -> activity?.onBackPressed()
+        }
         return super.onOptionsItemSelected(item)
     }
 
@@ -47,30 +55,61 @@ class CatFragment : Fragment() {
     ): View? {
         (activity as CatDisplayActivity).supportActionBar?.setDisplayHomeAsUpEnabled(true)
         setHasOptionsMenu(true)
-        return inflater.inflate(R.layout.cat_fragment, container, false)
-    }
-
-    override fun onDestroyView() {
-        (activity as CatDisplayActivity).supportActionBar?.setDisplayHomeAsUpEnabled(false)
-        setHasOptionsMenu(false)
-        super.onDestroyView()
-    }
-
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
         val breedObserver = Observer<Breed> {
             tvDescription.text = it.description
             tvName.text = it.name
             tvTemperament.text = it.temperament
-            tvHypoValue.text = it.hypoallergenic.toString()
+            tvHypoValue.text =
+                if (it.hypoallergenic == 1) getString(R.string.yes) else getString(R.string.no)
             tvOriginValue.text = it.origin.toString()
         }
-        viewModel.breed.observe(this, breedObserver)
+        viewModel.breedLiveData.observe(this, breedObserver)
+        viewModel.imageUrlLiveData.observe(this, Observer {
+            val placeHolder = Uri.Builder()
+                .scheme(UriUtil.LOCAL_RESOURCE_SCHEME)
+                .path(R.drawable.cat_walking.toString())
+                .build()
+            ivProfilePic.setImageURI(it)
+        })
         arguments?.getString(BREED_ID_ARG)?.let {
             viewModel.initBreed(it)
-
         }
+        return inflater.inflate(R.layout.cat_fragment, container, false)
+    }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        loadPlaceHolder()
+        viewModel.compositeDisposable.add(viewModel.loadImage()
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribeOn(Schedulers.io())
+            .doOnError { throw it }
+            .subscribe({
+                viewModel.imageUrlLiveData.value = it
+            }, {
+                Snackbar.make(cat_loading, "There's some error while loading, please check your internet connection", Snackbar.LENGTH_LONG)
+                    .setActionTextColor(resources.getColor(android.R.color.holo_red_light))
+                    .show()
+            }))
+    }
+
+    override fun onDestroyView() {
+        (activity as CatDisplayActivity).supportActionBar?.setDisplayHomeAsUpEnabled(false)
+        viewModel.compositeDisposable.clear()
+        setHasOptionsMenu(false)
+        super.onDestroyView()
+    }
+
+    private fun loadPlaceHolder() {
+        val uri = Uri.Builder()
+            .scheme(UriUtil.LOCAL_RESOURCE_SCHEME)
+            .path(R.drawable.cat_walking.toString())
+            .build()
+        val controller: DraweeController = Fresco.newDraweeControllerBuilder()
+            .setUri(uri)
+            .setAutoPlayAnimations(true)
+            .build();
+        ivProfilePic.controller = controller
     }
 
 }

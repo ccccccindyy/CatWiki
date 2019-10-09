@@ -1,9 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+<androidx.constraintlayout.widget.ConstraintLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    >
+
+    <com.facebook.drawee.view.SimpleDraweeView
+        android:id="@+id/ivProfilePic"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="0dp"
+        app:layout_constraintDimensionRatio="1.5"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/tvName"
@@ -13,12 +25,12 @@
         android:fontFamily="casual"
         android:textAllCaps="false"
         android:textColor="#9C27B0"
-        android:textSize="30sp"
+        android:textSize="32sp"
         android:textStyle="bold"
         android:gravity="center"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/ivProfilePic"
         tools:text="Bengal" />
 
     <TextView
@@ -26,20 +38,24 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
-        tools:text="cajwefjawefawefawefawefawefawefwaefawefwaefawefawe"
+        android:fontFamily="casual"
         android:textAlignment="viewStart"
-        android:textColor="#EBCC168F"
+        android:textColor="#043B67"
+        android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="@id/tvName"
         app:layout_constraintStart_toStartOf="@id/tvName"
-        app:layout_constraintTop_toBottomOf="@+id/tvName" />
+        app:layout_constraintTop_toBottomOf="@+id/tvName"
+        tools:text="cajwefjawefawefawefawefawefawefwaefawefwaefawefawe" />
 
     <TextView
         android:id="@+id/tvTemperament"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
+        android:fontFamily="casual"
         android:textAlignment="center"
-        android:textColor="#FF5722"
+        android:textColor="#9FFF5722"
+        android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="@+id/tvDescription"
         app:layout_constraintStart_toStartOf="@+id/tvDescription"
         app:layout_constraintTop_toBottomOf="@+id/tvDescription"
@@ -50,12 +66,18 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
+        android:fontFamily="casual"
+        android:text="@string/hometown"
+        android:textColor="@color/colorTextDark"
+        android:textSize="16sp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="@+id/tvTemperament"
-        app:layout_constraintTop_toBottomOf="@+id/tvTemperament"
-        tools:text="TextView" />
+        app:layout_constraintTop_toBottomOf="@+id/tvTemperament" />
 
     <TextView
+        android:textColor="@color/colorTextLight"
+        android:textSize="16sp"
+        android:fontFamily="casual"
         android:id="@+id/tvOriginValue"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -68,6 +90,9 @@
 
 
     <TextView
+        android:textColor="@color/colorTextLight"
+        android:textSize="16sp"
+        android:fontFamily="casual"
         android:id="@+id/tvHypoLabel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -75,10 +100,13 @@
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="@+id/tvOriginLabel"
         app:layout_constraintTop_toBottomOf="@+id/tvOriginLabel"
-        tools:text="TextView" />
+        android:text="@string/hypoallergic" />
 
 
     <TextView
+        android:textColor="@color/colorTextDark"
+        android:textSize="16sp"
+        android:fontFamily="casual"
         android:id="@+id/tvHypoValue"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -89,14 +117,27 @@
         app:layout_constraintStart_toEndOf="@+id/tvHypoLabel"
         tools:text="TextView" />
 
+<!--    <com.facebook.drawee.view.SimpleDraweeView-->
+<!--        android:layout_width="500dp"-->
+<!--        android:layout_height="500dp"/>-->
+    <TextView
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tvHypoLabel"
+        android:layout_width="200dp"
+        android:layout_height="200dp"/>
+
     <Button
+        style="@style/TextAppearance.AppCompat.Button"
+        android:textColor="@android:color/white"
+        android:background="@color/colorPrimary"
+        android:fontFamily="casual"
         android:id="@+id/tvGalleryAccess"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        tools:text="Gallery"
+        android:text="@string/gallery"
+        android:layout_margin="20dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/tvName" />
-
-
 </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
