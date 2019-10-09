@@ -6,12 +6,30 @@ import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
 
-abstract class DBOpenHelper(context: Context) : SQLiteOpenHelper(
+class DBOpenHelper(context: Context) : SQLiteOpenHelper(
     context,
     DATABASE_NAME,
     null,
     DATABASE_VERSION
 ) {
+    override fun onUpgrade(db: SQLiteDatabase?, oldVersion: Int, newVersion: Int) {
+    }
+
+    override fun onCreate(db: SQLiteDatabase?) {
+        val CREATE_BREED_TABLE = ("CREATE TABLE " +
+                DataUtil.TABLE_NAME + "(" +
+                DataUtil.COLUMN_ID + " VARCHAR(4) PRIMARY KEY," +
+                DataUtil.COLUMN_NAME + " VARCHAR(50)," +
+                DataUtil.COLUMN_DESC + " VARCHAR(500)," +
+                DataUtil.COLUMN_ORIGIN + " VARCHAR(50)," +
+                DataUtil.COLUMN_TEMP + " VARCHAR(280)," +
+                DataUtil.COLUMN_HYPO + " INTEGER"
+                + ")"
+                )
+
+        db?.execSQL(CREATE_BREED_TABLE)
+
+    }
 
     override fun equals(other: Any?): Boolean {
         if (this === other) return true

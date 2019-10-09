@@ -12,31 +12,32 @@ import pratice.com.example.xinzhang.recyclerview.R
 import io.reactivex.schedulers.Schedulers
 import practice.com.example.xin.app.data.breed.BreedDAO
 import practice.com.example.xin.app.ui.activities.display.CatDisplayActivity
+import javax.inject.Inject
+import androidx.core.app.ComponentActivity.ExtraData
+import androidx.core.content.ContextCompat.getSystemService
+import android.icu.lang.UCharacter.GraphemeClusterBreak.T
+import android.content.Context
+import practice.com.example.xin.app.Application
 
 
 class LoadBreedActivity : AppCompatActivity() {
 
-    private val viewModel: LoadBreedViewModel =
-        LoadBreedViewModel()
-    private val breedDAO: BreedDAO = BreedDAO(this)
+    @Inject lateinit var viewModel: LoadBreedViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_load_breed)
+        val app = applicationContext as Application
+        app.catComponent.inject(this)
         initUI()
         viewModel.compositeDisposable.add(viewModel.loadCatBreeds()
-            .flatMapIterable { breed -> breed }
-            .map{breedDAO.addBreed(breed = it)}
-            .toList()
-            .toObservable()
             .subscribeOn(Schedulers.io())
-            .doOnError{throw it}
+            .doOnError { throw it }
             .subscribe {
-               startActivity( Intent(this, CatDisplayActivity::class.java))
+                startActivity(Intent(this, CatDisplayActivity::class.java))
                 this.finish()
             })
-}
-
+    }
 
     override fun onDestroy() {
         viewModel.compositeDisposable.clear()

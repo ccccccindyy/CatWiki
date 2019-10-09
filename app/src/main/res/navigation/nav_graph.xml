@@ -2,7 +2,7 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
-        android:id="@+id/nav_graph2"
+        android:id="@+id/nav_graph"
         app:startDestination="@id/cat_list_fragment">
 
     <fragment android:id="@+id/cat_list_fragment"
@@ -19,10 +19,6 @@
             android:name="practice.com.example.xin.app.ui.cat.CatFragment"
             android:label="@string/second_fragment_label"
             tools:layout="@layout/cat_fragment">
-
-        <action
-                android:id="@+id/action_SecondFragment_to_FirstFragment"
-                app:destination="@id/cat_list_fragment" />
 
         <argument
                 android:name="myArg"

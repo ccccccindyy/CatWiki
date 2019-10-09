@@ -3,13 +3,19 @@ package practice.com.example.xin.app.api
 import okhttp3.OkHttpClient
 import practice.com.example.xin.app.api.Constants.Companion.BASE_URL
 import practice.com.example.xin.app.api.Constants.Companion.BREEDS
+import practice.com.example.xin.app.api.Constants.Companion.BREED_ID
+import practice.com.example.xin.app.api.Constants.Companion.IMAGE
 import practice.com.example.xin.app.data.breed.Breed
+import retrofit2.http.Field
 import java.util.concurrent.TimeUnit
 
 interface APIService {
 
     @retrofit2.http.GET(BREEDS)
     fun breeds(): io.reactivex.Observable<List<Breed>>
+
+    @retrofit2.http.GET(IMAGE)
+    fun getBreedDetail(@Field(BREED_ID) breedId: String): io.reactivex.Observable<List<Breed>>
 
     companion object Factory {
 

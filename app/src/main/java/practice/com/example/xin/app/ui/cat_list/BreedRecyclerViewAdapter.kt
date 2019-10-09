@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 
 import kotlinx.android.synthetic.main.item_cat.view.*
 import practice.com.example.xin.app.data.breed.Breed
-
+import pratice.com.example.xinzhang.recyclerview.R
 
 
 /**
@@ -22,7 +22,7 @@ class BreedRecyclerViewAdapter(
     }
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context)
-            .inflate(pratice.com.example.xinzhang.recyclerview.R.layout.item_cat, parent, false)
+            .inflate(R.layout.item_cat, parent, false)
         return ViewHolder(view)
     }
 
@@ -31,7 +31,7 @@ class BreedRecyclerViewAdapter(
         holder.mContentView.text = item.name
         with(holder.mView) {
             tag = item
-            holder.mContentView.setTextColor(resources.getColor(if (position %2 == 0) pratice.com.example.xinzhang.recyclerview.R.color.colorTextLight else pratice.com.example.xinzhang.recyclerview.R.color.colorTextDark))
+            holder.mContentView.setTextColor(resources.getColor(if (position %2 == 0) R.color.colorTextLight else R.color.colorTextDark))
             setOnClickListener{ onItemClickListener.onItemClick(item) }
         }
     }
