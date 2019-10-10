@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import practice.com.example.xin.app.Application
 import practice.com.example.xin.app.data.breed.Breed
+import practice.com.example.xin.app.ui.activities.display.CatDisplayActivity
 import practice.com.example.xin.app.ui.cat.CatFragment
 import pratice.com.example.xinzhang.recyclerview.R
 import javax.inject.Inject
@@ -45,6 +46,13 @@ class BreedListFragment : Fragment(), BreedRecyclerViewAdapter.OnItemClickListen
         }
         ((view as RecyclerView).adapter as BreedRecyclerViewAdapter).onItemClickListener = this
         return view
+    }
+
+    override fun onResume() {
+        super.onResume()
+        (activity as CatDisplayActivity).supportActionBar?.title =
+            getString(R.string.title_activity_main)
+
     }
 
 }

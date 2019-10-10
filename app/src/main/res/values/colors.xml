@@ -6,4 +6,6 @@
     <color name="colorTextDark">#C1673AB7</color>
     <color name="colorTextLight">#E2A8537F</color>
     <color name="colorAccent">#442C2E</color>
+    <color name="colorDarkGary">#99000000</color>
+    <color name="colorPrimarySemiTransparent">#80673AB7</color>
 </resources>

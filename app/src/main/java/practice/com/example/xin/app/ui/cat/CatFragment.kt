@@ -3,7 +3,6 @@ package practice.com.example.xin.app.ui.cat
 import android.content.Context
 import android.net.Uri
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
@@ -13,7 +12,6 @@ import androidx.lifecycle.Observer
 import com.facebook.common.util.UriUtil
 import com.facebook.drawee.backends.pipeline.Fresco
 import com.facebook.drawee.interfaces.DraweeController
-import com.facebook.imagepipeline.request.ImageRequest
 import com.google.android.material.snackbar.Snackbar
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
@@ -53,34 +51,35 @@ class CatFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        (activity as CatDisplayActivity).supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        val supportActionBar = (activity as CatDisplayActivity).supportActionBar
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
         setHasOptionsMenu(true)
         val breedObserver = Observer<Breed> {
             tvDescription.text = it.description
-            tvName.text = it.name
             tvTemperament.text = it.temperament
             tvHypoValue.text =
                 if (it.hypoallergenic == 1) getString(R.string.yes) else getString(R.string.no)
             tvOriginValue.text = it.origin.toString()
+            supportActionBar?.title = it.name
         }
         viewModel.breedLiveData.observe(this, breedObserver)
         viewModel.imageUrlLiveData.observe(this, Observer {
-            val placeHolder = Uri.Builder()
-                .scheme(UriUtil.LOCAL_RESOURCE_SCHEME)
-                .path(R.drawable.cat_walking.toString())
-                .build()
             ivProfilePic.setImageURI(it)
+            ibRefresh.visibility = View.VISIBLE
         })
         arguments?.getString(BREED_ID_ARG)?.let {
             viewModel.initBreed(it)
         }
+
         return inflater.inflate(R.layout.cat_fragment, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         loadPlaceHolder()
-        viewModel.compositeDisposable.add(viewModel.loadImage()
+        viewModel.loadImageSubject.onNext(true)
+        viewModel.compositeDisposable.add(
+            viewModel.loadImage()
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeOn(Schedulers.io())
             .doOnError { throw it }
@@ -91,6 +90,31 @@ class CatFragment : Fragment() {
                     .setActionTextColor(resources.getColor(android.R.color.holo_red_light))
                     .show()
             }))
+
+
+        ibRefresh.setOnClickListener {
+            viewModel.loadImageSubject.onNext(true)
+        }
+
+        viewModel.compositeDisposable.add(viewModel.loadImageSubject
+            .doOnNext {
+                loadPlaceHolder()
+                ibRefresh.visibility = View.INVISIBLE
+            }
+            .flatMap { viewModel.loadImage().subscribeOn(Schedulers.io()) }
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe({
+                viewModel.imageUrlLiveData.value = it
+            }, {
+                Snackbar.make(
+                    cat_loading,
+                    "There's some error while loading, please check your internet connection",
+                    Snackbar.LENGTH_LONG
+                )
+                    .setActionTextColor(resources.getColor(android.R.color.holo_red_light))
+                    .show()
+            })
+        )
     }
 
     override fun onDestroyView() {
