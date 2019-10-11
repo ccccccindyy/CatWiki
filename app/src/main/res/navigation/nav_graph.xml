@@ -6,7 +6,7 @@
         app:startDestination="@id/cat_list_fragment">
 
     <fragment android:id="@+id/cat_list_fragment"
-            android:name="practice.com.example.xin.app.ui.cat_list.BreedListFragment"
+        android:name="practice.com.example.xin.app.ui.breed.BreedListFragment"
             android:label="CatFragment"
             tools:layout="@layout/fragment_cat_list">
 

@@ -5,8 +5,8 @@ import practice.com.example.xin.app.api.Constants.Companion.BASE_URL
 import practice.com.example.xin.app.api.Constants.Companion.BREEDS
 import practice.com.example.xin.app.api.Constants.Companion.BREED_ID
 import practice.com.example.xin.app.api.Constants.Companion.IMAGE
-import practice.com.example.xin.app.data.Image
 import practice.com.example.xin.app.data.breed.Breed
+import practice.com.example.xin.app.data.img.Image
 import retrofit2.http.Query
 import java.util.concurrent.TimeUnit
 

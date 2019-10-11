@@ -1,19 +1,18 @@
 package practice.com.example.xin.app.ui.activities.display
 
-import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
 
-
-import kotlinx.android.synthetic.main.activity_app_display.*
 import android.content.Intent
 import android.net.Uri
+import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
+import kotlinx.android.synthetic.main.activity_app_display.*
 
 
 class CatDisplayActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(pratice.com.example.xinzhang.recyclerview.R.layout.activity_app_display)
+        setContentView(pratice.com.example.xin.app.R.layout.activity_app_display)
         setSupportActionBar(toolbar)
 
         fab.setOnClickListener {

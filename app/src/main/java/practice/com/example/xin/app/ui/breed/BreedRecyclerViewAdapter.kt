@@ -1,4 +1,4 @@
-package practice.com.example.xin.app.ui.cat_list
+package practice.com.example.xin.app.ui.breed
 
 import android.view.LayoutInflater
 import android.view.View
@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 
 import kotlinx.android.synthetic.main.item_cat.view.*
 import practice.com.example.xin.app.data.breed.Breed
-import pratice.com.example.xinzhang.recyclerview.R
+import pratice.com.example.xin.app.R
 
 
 /**

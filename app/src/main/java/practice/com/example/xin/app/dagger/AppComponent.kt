@@ -4,8 +4,8 @@ import dagger.BindsInstance
 import dagger.Component
 import practice.com.example.xin.app.Application
 import practice.com.example.xin.app.ui.activities.load.LoadBreedActivity
+import practice.com.example.xin.app.ui.breed.BreedListFragment
 import practice.com.example.xin.app.ui.cat.CatFragment
-import practice.com.example.xin.app.ui.cat_list.BreedListFragment
 import javax.inject.Singleton
 
 @Singleton

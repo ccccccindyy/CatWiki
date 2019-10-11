@@ -1,4 +1,4 @@
-package practice.com.example.xin.app.ui.cat_list
+package practice.com.example.xin.app.ui.breed
 
 import android.content.Context
 import android.os.Bundle
@@ -13,7 +13,7 @@ import practice.com.example.xin.app.Application
 import practice.com.example.xin.app.data.breed.Breed
 import practice.com.example.xin.app.ui.activities.display.CatDisplayActivity
 import practice.com.example.xin.app.ui.cat.CatFragment
-import pratice.com.example.xinzhang.recyclerview.R
+import pratice.com.example.xin.app.R
 import javax.inject.Inject
 
 class BreedListFragment : Fragment(), BreedRecyclerViewAdapter.OnItemClickListener {

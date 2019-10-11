@@ -1,8 +1,7 @@
-package pratice.com.example.xinzhang.recyclerview
+package practice.com.example.xin.app
 
+import org.junit.Assert.assertEquals
 import org.junit.Test
-
-import org.junit.Assert.*
 
 /**
  * Example local unit test, which will execute on the development machine (host).

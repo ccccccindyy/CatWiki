@@ -1,5 +1,6 @@
 package practice.com.example.xin.app.ui.cat
 
+import androidx.annotation.VisibleForTesting
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import io.reactivex.Observable
@@ -13,24 +14,23 @@ import javax.inject.Inject
 class CatViewModel @Inject constructor(private val breedDAO: BreedDAO, private val imageRepository: ImageRepository) : ViewModel() {
     val compositeDisposable: CompositeDisposable = CompositeDisposable()
     internal val loadImageSubject: PublishSubject<Boolean> = PublishSubject.create()
+
     internal val breedLiveData: MutableLiveData<Breed> by lazy {
         MutableLiveData<Breed>()
     }
 
-    internal val imageUrlLiveData: MutableLiveData<String> by lazy {
-        MutableLiveData<String>()
-    }
 
-    internal fun initBreed(id: String) {
+    @VisibleForTesting(otherwise = VisibleForTesting.PACKAGE_PRIVATE)
+    fun initBreed(id: String) {
          breedLiveData.value = breedDAO.getBreed(id)
     }
 
-    internal fun loadImage(): Observable<String> {
+    @VisibleForTesting(otherwise = VisibleForTesting.PACKAGE_PRIVATE)
+    fun loadImage(): Observable<String> {
        return imageRepository.getImageForCat(breedLiveData.value?.id.toString())
             .map {
                 it[0].url
             }
-
     }
 
 

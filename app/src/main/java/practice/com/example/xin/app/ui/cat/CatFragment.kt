@@ -20,7 +20,7 @@ import kotlinx.android.synthetic.main.cat_fragment.*
 import practice.com.example.xin.app.Application
 import practice.com.example.xin.app.data.breed.Breed
 import practice.com.example.xin.app.ui.activities.display.CatDisplayActivity
-import pratice.com.example.xinzhang.recyclerview.R
+import pratice.com.example.xin.app.R
 import javax.inject.Inject
 
 
@@ -63,10 +63,6 @@ class CatFragment : Fragment() {
             supportActionBar?.title = it.name
         }
         viewModel.breedLiveData.observe(this, breedObserver)
-        viewModel.imageUrlLiveData.observe(this, Observer {
-            ivProfilePic.setImageURI(it)
-            ibRefresh.visibility = View.VISIBLE
-        })
         arguments?.getString(BREED_ID_ARG)?.let {
             viewModel.initBreed(it)
         }
@@ -84,12 +80,12 @@ class CatFragment : Fragment() {
             .subscribeOn(Schedulers.io())
             .doOnError { throw it }
             .subscribe({
-                viewModel.imageUrlLiveData.value = it
+                ivProfilePic.setImageURI(it)
+                ibRefresh.visibility = View.VISIBLE
             }, {
-                Snackbar.make(cat_loading, "There's some error while loading, please check your internet connection", Snackbar.LENGTH_LONG)
-                    .setActionTextColor(resources.getColor(android.R.color.holo_red_light))
-                    .show()
-            }))
+                loadingErrorMessage()
+            })
+        )
 
 
         ibRefresh.setOnClickListener {
@@ -104,15 +100,10 @@ class CatFragment : Fragment() {
             .flatMap { viewModel.loadImage().subscribeOn(Schedulers.io()) }
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({
-                viewModel.imageUrlLiveData.value = it
+                ivProfilePic.setImageURI(it)
+                ibRefresh.visibility = View.VISIBLE
             }, {
-                Snackbar.make(
-                    cat_loading,
-                    "There's some error while loading, please check your internet connection",
-                    Snackbar.LENGTH_LONG
-                )
-                    .setActionTextColor(resources.getColor(android.R.color.holo_red_light))
-                    .show()
+                loadingErrorMessage()
             })
         )
     }
@@ -132,8 +123,15 @@ class CatFragment : Fragment() {
         val controller: DraweeController = Fresco.newDraweeControllerBuilder()
             .setUri(uri)
             .setAutoPlayAnimations(true)
-            .build();
+            .build()
         ivProfilePic.controller = controller
     }
 
+    private fun loadingErrorMessage() {
+        Snackbar.make(
+            cat_loading,
+            "There's some error while loading, please check your internet connection",
+            Snackbar.LENGTH_LONG
+        ).setActionTextColor(resources.getColor(android.R.color.holo_red_light)).show()
+    }
 }

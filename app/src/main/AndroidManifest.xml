@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-        package="pratice.com.example.xinzhang.recyclerview">
+    package="pratice.com.example.xin.app">
 
     <uses-permission android:name="android.permission.INTERNET" />
 

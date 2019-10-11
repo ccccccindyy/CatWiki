@@ -43,7 +43,8 @@ class DBOpenHelper(context: Context) : SQLiteOpenHelper(
 
     fun insert(values: ContentValues, tableName: String): Boolean {
         val db = this.writableDatabase
-        val success = db.insert(tableName, null, values)
+        val success =
+            db.insertWithOnConflict(tableName, null, values, SQLiteDatabase.CONFLICT_REPLACE)
         db.close()
         return success > 0
     }
