@@ -1,3 +1,9 @@
 # CatWiki
-A demo app to show cat list with recyclerview, navigate to new fragment with android navigation controller. Implement with android Jetpack.
-![Screenshot_1570499618](https://user-images.githubusercontent.com/10921547/66361580-36b93c00-e977-11e9-98c8-6eaae9ec861f.png)
+A demo app to show cat list with recyclerview, navigate to new fragment with android navigation controller. 
+
+Implement in Kotlin, with android Jetpack and dagger 2
+
+It requests cat API https://docs.thecatapi.com/api-reference/breeds/breeds-list for all cat breeds, and save the breed to Sqlite database. When user clicks the breed item, it navigates to the cat detail fragment that can allow user to fresh the cats. 
+
+Unit test done with Mockito
+
