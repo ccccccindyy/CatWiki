@@ -10,7 +10,7 @@ import javax.inject.Singleton
 
 @Singleton
 @Component(
-    modules = [AppModule::class]
+    modules = [AppModule::class, FirebaseModule::class]
 )
 interface AppComponent {
     @Component.Builder
@@ -20,6 +20,7 @@ interface AppComponent {
 
         fun appModule(appModule: AppModule): Builder
 
+        fun firebaseModule(firebaseModule: FirebaseModule): Builder
 
         fun build(): AppComponent
     }

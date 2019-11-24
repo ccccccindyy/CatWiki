@@ -19,12 +19,13 @@ import kotlinx.android.synthetic.main.activity_load_breed.*
 import kotlinx.android.synthetic.main.cat_fragment.*
 import practice.com.example.xin.app.Application
 import practice.com.example.xin.app.data.breed.Breed
+import practice.com.example.xin.app.firebase.storage.FirebaseHandler
 import practice.com.example.xin.app.ui.activities.display.CatDisplayActivity
 import pratice.com.example.xin.app.R
 import javax.inject.Inject
 
 
-class CatFragment : Fragment() {
+class CatFragment : Fragment(), FirebaseHandler<Breed> {
 
 
     companion object {
@@ -66,7 +67,7 @@ class CatFragment : Fragment() {
         arguments?.getString(BREED_ID_ARG)?.let {
             viewModel.initBreed(it)
         }
-
+        viewModel.initRealTimeDB(this)
         return inflater.inflate(R.layout.cat_fragment, container, false)
     }
 
@@ -133,5 +134,12 @@ class CatFragment : Fragment() {
             "There's some error while loading, please check your internet connection",
             Snackbar.LENGTH_LONG
         ).setActionTextColor(resources.getColor(android.R.color.holo_red_light)).show()
+    }
+
+    override fun onDataFetchFailed() {
+    }
+
+    override fun onDataFetched(data: Breed?) {
+       viewModel.breedLiveData.value = data
     }
 }

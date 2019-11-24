@@ -14,8 +14,10 @@ import pratice.com.example.xin.app.R
 /**
  * [RecyclerView.Adapter] that can display a [Breed] and makes a call to the
  */
-class BreedRecyclerViewAdapter(
-    private val mValues: List<Breed>) : RecyclerView.Adapter<BreedRecyclerViewAdapter.ViewHolder>() {
+class BreedRecyclerViewAdapter() : RecyclerView.Adapter<BreedRecyclerViewAdapter.ViewHolder>() {
+    var breeds = arrayListOf<Breed>()
+
+
     internal lateinit var onItemClickListener: OnItemClickListener
     interface OnItemClickListener {
         fun onItemClick(item: Breed)
@@ -27,7 +29,7 @@ class BreedRecyclerViewAdapter(
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val item = mValues[position]
+        val item = breeds[position]
         holder.mContentView.text = item.name
         with(holder.mView) {
             tag = item
@@ -36,7 +38,7 @@ class BreedRecyclerViewAdapter(
         }
     }
 
-    override fun getItemCount(): Int = mValues.size
+    override fun getItemCount(): Int = breeds.size
 
     inner class ViewHolder(val mView: View) : RecyclerView.ViewHolder(mView) {
         val mContentView: TextView = mView.breed_name

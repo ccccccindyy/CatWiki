@@ -1,0 +1,29 @@
+package practice.com.example.xin.app.firebase.storage
+
+import com.google.firebase.database.ChildEventListener
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import practice.com.example.xin.app.data.breed.BreedList
+import com.google.firebase.database.ValueEventListener
+import practice.com.example.xin.app.data.breed.Breed
+import practice.com.example.xin.app.firebase.ReadTimeDBHelper
+import java.util.*
+
+class BreedHelper: ReadTimeDBHelper<Breed>(){
+    init {
+        dataListener = object : ValueEventListener {
+
+
+            override fun onCancelled(databaseError: DatabaseError) {
+                firebaseHandler?.onDataFetchFailed()
+            }
+
+
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                dataSnapshot.getValue(Breed::class.java)?.let {
+                    firebaseHandler?.onDataFetched(it)
+                }
+            }
+        }
+    }
+}

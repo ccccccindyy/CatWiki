@@ -10,14 +10,13 @@ import practice.com.example.xin.app.firebase.storage.BreedListDBHelper
 import javax.inject.Singleton
 
 @Module
-class AppModule(private val app: Application) {
+class FirebaseModule(private val app: Application) {
 
     @Provides
     @Singleton
-    fun dbOpenHelper(): DBOpenHelper = DBOpenHelper(app)
+    fun getBreedListDBHelper(): BreedListDBHelper = BreedListDBHelper()
 
     @Provides
     @Singleton
-    fun createAPIService(): APIService = APIService.create()
-
+    fun getBreedHelper(): BreedHelper = BreedHelper()
 }

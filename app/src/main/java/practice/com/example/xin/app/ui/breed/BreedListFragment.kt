@@ -9,14 +9,17 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import kotlinx.android.synthetic.main.fragment_cat_list.*
 import practice.com.example.xin.app.Application
 import practice.com.example.xin.app.data.breed.Breed
+import practice.com.example.xin.app.data.breed.BreedList
+import practice.com.example.xin.app.firebase.storage.FirebaseHandler
 import practice.com.example.xin.app.ui.activities.display.CatDisplayActivity
 import practice.com.example.xin.app.ui.cat.CatFragment
 import pratice.com.example.xin.app.R
 import javax.inject.Inject
 
-class BreedListFragment : Fragment(), BreedRecyclerViewAdapter.OnItemClickListener {
+class BreedListFragment : Fragment(), BreedRecyclerViewAdapter.OnItemClickListener, FirebaseHandler<ArrayList<Breed>> {
 
     @Inject lateinit var viewModel: BreedListViewModel
 
@@ -37,22 +40,41 @@ class BreedListFragment : Fragment(), BreedRecyclerViewAdapter.OnItemClickListen
         savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.fragment_cat_list, container, false)
-
         if (view is RecyclerView) {
             with(view) {
                 layoutManager =  LinearLayoutManager(context)
-                adapter = BreedRecyclerViewAdapter(viewModel.getBreeds())
+                adapter = BreedRecyclerViewAdapter()
             }
         }
         ((view as RecyclerView).adapter as BreedRecyclerViewAdapter).onItemClickListener = this
+        viewModel.initRealTimeDB(this)
         return view
     }
 
+    override fun onStart() {
+        super.onStart()
+        viewModel.initBreedData()
+
+    }
     override fun onResume() {
         super.onResume()
         (activity as CatDisplayActivity).supportActionBar?.title =
             getString(R.string.title_activity_main)
 
     }
+
+    override fun onDataFetchFailed() {
+
+    }
+
+    override fun onDataFetched(data: ArrayList<Breed>?) {
+        data?.let {breedList ->
+            (breed_list.adapter as BreedRecyclerViewAdapter).let {
+                it.breeds.addAll(breedList)
+                it.notifyDataSetChanged()
+            }
+        }
+    }
+
 
 }
