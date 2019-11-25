@@ -13,15 +13,16 @@ class Breed() {
     var origin: String? = null
     var temperament: String? = null
     var hypoallergenic: Int = 0
+    var url: String? = null
 
     constructor(id: String?,  name: String?,  description: String?,
-                 origin: String?,  temperament: String?,  hypoallergenic: Int):this(){
+                 origin: String?,  temperament: String?,  hypoallergenic: Int, url: String?):this(){
         this.id = id
         this.description = description
         this.origin = origin
         this.temperament = temperament
         this.hypoallergenic = hypoallergenic
-
+        this.url = url
     }
     override fun toString(): String = name?: ""
 
@@ -34,7 +35,8 @@ class Breed() {
             "description" to description,
             "origin" to origin,
             "temperament" to temperament,
-            "hypoallergenic" to hypoallergenic
+            "hypoallergenic" to hypoallergenic,
+            "url" to url
         )
     }
 

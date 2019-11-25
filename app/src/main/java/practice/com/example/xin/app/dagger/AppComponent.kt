@@ -3,9 +3,11 @@ package practice.com.example.xin.app.dagger
 import dagger.BindsInstance
 import dagger.Component
 import practice.com.example.xin.app.Application
+import practice.com.example.xin.app.ui.activities.display.CatDisplayActivity
 import practice.com.example.xin.app.ui.activities.load.LoadBreedActivity
 import practice.com.example.xin.app.ui.breed.BreedListFragment
 import practice.com.example.xin.app.ui.cat.CatFragment
+import practice.com.example.xin.app.ui.recogizer.CatRecognizerResultFragment
 import javax.inject.Singleton
 
 @Singleton
@@ -28,5 +30,7 @@ interface AppComponent {
     fun inject(loadBreedActivity: LoadBreedActivity)
     fun inject(application: Application)
     fun inject(breedListFragment: BreedListFragment)
+    fun inject(catRecognizerResultFragment: CatRecognizerResultFragment)
+    fun inject(catDisplayActivity: CatDisplayActivity)
     fun inject(catFragment: CatFragment)
 }

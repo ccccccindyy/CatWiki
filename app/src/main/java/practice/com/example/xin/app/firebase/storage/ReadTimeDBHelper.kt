@@ -1,7 +1,6 @@
-package practice.com.example.xin.app.firebase
+package practice.com.example.xin.app.firebase.storage
 
 import com.google.firebase.database.*
-import practice.com.example.xin.app.firebase.storage.FirebaseHandler
 
 
 abstract class ReadTimeDBHelper<T>() {

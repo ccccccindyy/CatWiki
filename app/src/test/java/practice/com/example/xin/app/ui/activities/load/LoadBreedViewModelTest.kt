@@ -9,13 +9,10 @@ import org.mockito.Mock
 import org.mockito.Mockito
 import org.mockito.MockitoAnnotations
 import practice.com.example.xin.app.data.breed.Breed
-import practice.com.example.xin.app.data.breed.BreedDAO
 import practice.com.example.xin.app.repository.BreedRepository
 
 class LoadBreedViewModelTest {
 
-    @Mock
-    private lateinit var breedDAO: BreedDAO
 
     @Mock
     private lateinit var repo: BreedRepository
@@ -55,10 +52,6 @@ class LoadBreedViewModelTest {
         bList.add(breed2)
 
         Mockito.`when`(repo.getBreeds()).thenReturn(Observable.just(bList))
-        Mockito.`when`(breedDAO.addBreed(any())).thenReturn(true)
-
-        loadBreedViewModel.loadCatBreeds().test().assertComplete().assertNoErrors()
-
 
     }
 }

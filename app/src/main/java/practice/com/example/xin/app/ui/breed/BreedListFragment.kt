@@ -9,10 +9,10 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import io.reactivex.disposables.CompositeDisposable
 import kotlinx.android.synthetic.main.fragment_cat_list.*
 import practice.com.example.xin.app.Application
 import practice.com.example.xin.app.data.breed.Breed
-import practice.com.example.xin.app.data.breed.BreedList
 import practice.com.example.xin.app.firebase.storage.FirebaseHandler
 import practice.com.example.xin.app.ui.activities.display.CatDisplayActivity
 import practice.com.example.xin.app.ui.cat.CatFragment
@@ -24,9 +24,14 @@ class BreedListFragment : Fragment(), BreedRecyclerViewAdapter.OnItemClickListen
     @Inject lateinit var viewModel: BreedListViewModel
 
     override fun onItemClick(item: Breed) {
+        navigateToCatFragment(item.id)
+    }
+
+    fun navigateToCatFragment(breedId: String?){
         val args = Bundle()
-        args.putString(CatFragment.BREED_ID_ARG, item.id)
+        args.putString(CatFragment.BREED_ID_ARG, breedId)
         view?.findNavController()?.navigate(R.id.catFragment, args)
+        viewModel.initRealTimeDB(null)
     }
 
     override fun onAttach(context: Context) {
@@ -40,6 +45,10 @@ class BreedListFragment : Fragment(), BreedRecyclerViewAdapter.OnItemClickListen
         savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.fragment_cat_list, container, false)
+        ((activity as CatDisplayActivity).msgCatId)?.let{
+            navigateToCatFragment(it)
+            (activity as CatDisplayActivity).msgCatId = null
+        }
         if (view is RecyclerView) {
             with(view) {
                 layoutManager =  LinearLayoutManager(context)
@@ -47,7 +56,6 @@ class BreedListFragment : Fragment(), BreedRecyclerViewAdapter.OnItemClickListen
             }
         }
         ((view as RecyclerView).adapter as BreedRecyclerViewAdapter).onItemClickListener = this
-        viewModel.initRealTimeDB(this)
         return view
     }
 
@@ -58,6 +66,7 @@ class BreedListFragment : Fragment(), BreedRecyclerViewAdapter.OnItemClickListen
     }
     override fun onResume() {
         super.onResume()
+        viewModel.initRealTimeDB(this)
         (activity as CatDisplayActivity).supportActionBar?.title =
             getString(R.string.title_activity_main)
 

@@ -3,20 +3,27 @@ package practice.com.example.xin.app.ui.activities.load
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
+import android.widget.Toast
+import androidx.annotation.NonNull
 import androidx.appcompat.app.AppCompatActivity
 import com.facebook.common.util.UriUtil
 import com.facebook.drawee.backends.pipeline.Fresco
 import com.facebook.drawee.interfaces.DraweeController
-import com.google.android.material.snackbar.Snackbar
-import io.reactivex.schedulers.Schedulers
+import com.google.android.gms.tasks.OnCompleteListener
+import com.google.android.gms.tasks.Task
+import com.google.firebase.iid.FirebaseInstanceId
+import com.google.firebase.iid.InstanceIdResult
+import io.reactivex.internal.util.HalfSerializer.onComplete
 import kotlinx.android.synthetic.main.activity_load_breed.*
 import practice.com.example.xin.app.Application
+import practice.com.example.xin.app.firebase.ml.LoadModelCallBack
 import practice.com.example.xin.app.ui.activities.display.CatDisplayActivity
 import pratice.com.example.xin.app.R
 import javax.inject.Inject
 
 
-class LoadBreedActivity : AppCompatActivity() {
+class LoadBreedActivity : AppCompatActivity(), LoadModelCallBack {
     @Inject lateinit var viewModel: LoadBreedViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -25,17 +32,7 @@ class LoadBreedActivity : AppCompatActivity() {
         val app = applicationContext as Application
         app.catComponent.inject(this)
         initUI()
-        viewModel.compositeDisposable.add(viewModel.loadCatBreeds()
-            .subscribeOn(Schedulers.io())
-            .doOnError { throw it }
-            .subscribe ({
-                startActivity(Intent(this, CatDisplayActivity::class.java))
-                this.finish()
-            }, {
-            Snackbar.make(cat_loading, "There's some error while loading, please check your internet connection", Snackbar.LENGTH_LONG)
-                .setActionTextColor(resources.getColor(android.R.color.holo_red_light))
-                .show()
-            }))
+        viewModel.loadCatModels(this)
     }
 
     override fun onDestroy() {
@@ -54,4 +51,8 @@ class LoadBreedActivity : AppCompatActivity() {
             .build()
         cat_loading.controller = controller
     }
+
+    override fun onModelLoaded() {
+        startActivity(Intent(this, CatDisplayActivity::class.java))
+        this.finish()    }
 }
